@@ -1,6 +1,7 @@
 AUTHOR = 'Sergei K'
 SITENAME = 'cv'
-SITEURL = "https://github.com/frezzz1/ny_cv/"
+SITEURL = "https://frezzz1.github.io/ny_cv/"
+
 
 PATH = "content"
 

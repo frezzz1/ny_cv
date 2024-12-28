@@ -1,4 +1,4 @@
-name: UploadCV
+name: CV
 
 on:
   push:
