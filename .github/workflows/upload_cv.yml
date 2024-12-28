@@ -1,0 +1,58 @@
+name: UploadCV
+
+on:
+  push:
+    branches: [main]  # Работает только для ветки main
+
+permissions:
+  contents: read  # Чтение содержимого репозитория
+  pages: write    # Разрешение на запись для Pages
+  id-token: write  # Разрешение на создание ID-токенов (для авторизации)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Create virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          
+      - name: Install dependencies
+        run: |
+          source venv/bin/activate
+          pip install pelican[markdown]
+
+      - name: Build Site
+        run: |
+          source venv/bin/activate
+          pelican content -o output -s pelicanconf.py
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./output
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build  # Этот шаг зависит от выполнения предыдущего
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
