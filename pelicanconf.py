@@ -2,7 +2,6 @@ AUTHOR = 'Sergei K'
 SITENAME = 'cv'
 SITEURL = "https://frezzz1.github.io/ny_cv/"
 
-
 PATH = "content"
 
 TIMEZONE = 'Europe/Moscow'
