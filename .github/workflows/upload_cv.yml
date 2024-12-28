@@ -1,4 +1,4 @@
-name: CV
+name: upload_cv
 
 on:
   push:
@@ -11,42 +11,42 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
     steps:
-      - name: Checkout code
+      - name: Checkout code #получаем код репозитория
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Setup Python #установка питон
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
-      - name: Create virtual environment
+      - name: Create virtual environment #создание вирт. окружения и его активация 
         run: |
           python -m venv venv
           source venv/bin/activate
           
-      - name: Install dependencies
+      - name: Install dependencies #установка зависимостей
         run: |
           source venv/bin/activate
           pip install pelican[markdown]
 
-      - name: Build Site
+      - name: Build Site #сборка сайта
         run: |
           source venv/bin/activate
           pelican content -o output -s pelicanconf.py
 
-      - name: Setup Pages
+      - name: Setup Pages #создаем конфигурацию нужную
         id: pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload artifact #грузим сайт
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./output
 
   deploy:
-    environment:
+    environment: #среда для публикации сайта
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
